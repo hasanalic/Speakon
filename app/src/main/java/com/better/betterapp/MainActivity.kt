@@ -8,13 +8,16 @@ import androidx.navigation.compose.rememberNavController
 import com.better.betterapp.core.presentation.navigation.Graph
 import com.better.betterapp.core.presentation.navigation.RootNavigationGrapgWithoutOnboarding
 import com.better.betterapp.core.presentation.navigation.RootNavigationGraph
+import com.better.betterapp.core.presentation.shared_preference.CustomSharedPreferences
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val onBoardingCompleted = false // customSharedPreferences.getOnBoardingState()!!
+        val customSharedPreferences = CustomSharedPreferences(this)
+
+        val onBoardingCompleted = customSharedPreferences.getOnBoardingState()!!
         val startDestination = Graph.HOME
 
         setContent {
