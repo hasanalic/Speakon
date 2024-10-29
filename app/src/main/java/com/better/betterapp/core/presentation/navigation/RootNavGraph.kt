@@ -23,14 +23,14 @@ fun RootNavigationGraph(
 //            })
         }
 
-        composable(route = Graph.PERMISSION) {
+//        composable(route = Graph.PERMISSION) {
 //            PermissionsScreen(navigateTo = {
 //                navController.navigate(Graph.HOME) {
 //                    popUpTo(Graph.PERMISSION) { inclusive = true }
 //                    launchSingleTop = true
 //                }
 //            })
-        }
+//        }
 
         composable(route = Graph.HOME) {
 //            HomeScreen()
@@ -56,14 +56,14 @@ fun RootNavigationGrapgWithoutOnboarding(
         route = Graph.ROOT,
         startDestination = startDestination
     ) {
-        composable(route = Graph.PERMISSION) {
+//        composable(route = Graph.PERMISSION) {
 //            PermissionsScreen(navigateTo = {
 //                navController.navigate(Graph.HOME) {
 //                    popUpTo(Graph.PERMISSION) { inclusive = true }
 //                    launchSingleTop = true
 //                }
 //            })
-        }
+//        }
 
         composable(route = Graph.HOME) {
 //            HomeScreen()
