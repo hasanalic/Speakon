@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_home.presentation.home.views
+package com.better.betterapp.feature_home.presentation.main.views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,27 +31,22 @@ import androidx.navigation.NavHostController
 import com.better.betterapp.R
 import com.better.betterapp.core.presentation.navigation.Graph
 import com.better.betterapp.feature_home.presentation.components.SpeakingPostItem
-import com.better.betterapp.feature_home.presentation.home.HomeViewModel
+import com.better.betterapp.feature_home.presentation.main.MainViewModel
 import com.better.betterapp.feature_home.presentation.util.AppDetails.Companion.getAppName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun MainScreen(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel()
+    navigateToDetail: (Int) -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
-    val state = viewModel.stateHome.value
+    val state = viewModel.stateMain.value
 
     val context = LocalContext.current
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    val action: (Int) -> Unit = remember {
-        {
-            navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${it}")
-        }
-    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -69,6 +64,7 @@ fun HomeScreen(
                     IconButton(
                         onClick = {
                             // günlük konu gösterilir.
+                            navigateToDetail(1)
                         }
                     ) {
                         Icon(
@@ -104,7 +100,9 @@ fun HomeScreen(
                 ) { speakingPost ->
                     SpeakingPostItem(
                         speakingPost = speakingPost,
-                        onClick = { action(speakingPost.postId) }
+                        onClick = {
+                            navigateToDetail(speakingPost.postId)
+                        }
                     )
                 }
             }

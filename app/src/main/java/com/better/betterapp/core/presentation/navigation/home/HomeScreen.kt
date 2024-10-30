@@ -21,13 +21,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(navController: NavHostController = rememberNavController(), navigateToDetail: (Int) -> Unit) {
     Scaffold(
         bottomBar = {
             BottomBar(navHostController = navController)
         }
     ) {
-        HomeNavGraph(navController = navController, it)
+        HomeNavGraph(navController = navController, paddingValues = it, navigateToDetail = navigateToDetail)
     }
 }
 

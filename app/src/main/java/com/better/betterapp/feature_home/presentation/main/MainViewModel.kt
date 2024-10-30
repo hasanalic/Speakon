@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_home.presentation.home
+package com.better.betterapp.feature_home.presentation.main
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+
+class MainViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _stateHome = mutableStateOf(HomeState())
-    val stateHome: State<HomeState> = _stateHome
+    private val _stateMain = mutableStateOf(MainState())
+    val stateMain: State<MainState> = _stateMain
 
     init {
         getSpeakingPosts()

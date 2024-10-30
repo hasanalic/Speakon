@@ -9,7 +9,9 @@ import com.better.betterapp.core.presentation.navigation.Graph
 import com.better.betterapp.core.presentation.navigation.RootNavigationGrapgWithoutOnboarding
 import com.better.betterapp.core.presentation.navigation.RootNavigationGraph
 import com.better.betterapp.core.presentation.shared_preference.CustomSharedPreferences
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

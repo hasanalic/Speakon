@@ -2,8 +2,15 @@ package com.better.betterapp.core.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.better.betterapp.core.presentation.navigation.home.HomeScreen
+import com.better.betterapp.feature_login.LoginScreen
+import com.better.betterapp.feature_onboarding.OnboardingScreen
+import com.better.betterapp.feature_speaking.SpeakingScreen
+import com.better.betterapp.feature_speaking_detail.SpeakingDetailScreen
 
 @Composable
 fun RootNavigationGraph(
@@ -15,33 +22,38 @@ fun RootNavigationGraph(
         startDestination = Graph.ONBOARDING
     ) {
         composable(route = Graph.ONBOARDING) {
-//            OnboardingScreen(navigateTo = {
-//                navController.navigate(Graph.PERMISSION) {
-//                    popUpTo(Graph.ONBOARDING) { inclusive = true }
-//                    launchSingleTop = true
-//                }
-//            })
+            OnboardingScreen(navigateTo = {
+                navController.navigate(Graph.LOGIN) {
+                    popUpTo(Graph.ONBOARDING) { inclusive = true }
+                    launchSingleTop = true
+                }
+            })
         }
 
-//        composable(route = Graph.PERMISSION) {
-//            PermissionsScreen(navigateTo = {
-//                navController.navigate(Graph.HOME) {
-//                    popUpTo(Graph.PERMISSION) { inclusive = true }
-//                    launchSingleTop = true
-//                }
-//            })
-//        }
+        composable(route = Graph.LOGIN) {
+            LoginScreen(navigateTo = {
+                navController.navigate(Graph.HOME) {
+                    popUpTo(Graph.LOGIN) { inclusive = true }
+                    launchSingleTop = true
+                }
+            })
+        }
 
         composable(route = Graph.HOME) {
-//            HomeScreen()
+            HomeScreen(navigateToDetail = { postId ->
+                navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
+            })
         }
 
-        composable(route = Graph.SPEAKING_DETAIL) {
-//            HomeScreen()
+        composable(
+            route = Graph.SPEAKING_DETAIL + "?postId={postId}",
+            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+        ) {
+            SpeakingDetailScreen()
         }
 
         composable(route = Graph.SPEAKING) {
-//            SpeakingScreen()
+            SpeakingScreen()
         }
     }
 }
@@ -56,25 +68,30 @@ fun RootNavigationGrapgWithoutOnboarding(
         route = Graph.ROOT,
         startDestination = startDestination
     ) {
-//        composable(route = Graph.PERMISSION) {
-//            PermissionsScreen(navigateTo = {
-//                navController.navigate(Graph.HOME) {
-//                    popUpTo(Graph.PERMISSION) { inclusive = true }
-//                    launchSingleTop = true
-//                }
-//            })
-//        }
-
-        composable(route = Graph.HOME) {
-//            HomeScreen()
+        composable(route = Graph.LOGIN) {
+            LoginScreen(navigateTo = {
+                navController.navigate(Graph.HOME) {
+                    popUpTo(Graph.LOGIN) { inclusive = true }
+                    launchSingleTop = true
+                }
+            })
         }
 
-        composable(route = Graph.SPEAKING_DETAIL) {
-//            SpeakingDetailScreen()
+        composable(route = Graph.HOME) {
+            HomeScreen(navigateToDetail = { postId ->
+                navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
+            })
+        }
+
+        composable(
+            route = Graph.SPEAKING_DETAIL + "?postId={postId}",
+            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+        ) {
+            SpeakingDetailScreen()
         }
 
         composable(route = Graph.SPEAKING) {
-//            SpeakingScreen()
+            SpeakingScreen()
         }
     }
 }
@@ -82,7 +99,7 @@ fun RootNavigationGrapgWithoutOnboarding(
 object Graph {
     const val ROOT = "root_graph"
     const val ONBOARDING = "onboarding_graph"
-    const val PERMISSION = "permission_graph"
+    const val LOGIN = "login_graph"
     const val HOME = "home_graph"
     const val SPEAKING_DETAIL = "speaking_detail_graph"
     const val SPEAKING = "speaking_graph"
