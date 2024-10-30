@@ -6,12 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.better.betterapp.core.presentation.navigation.Graph
-import com.better.betterapp.feature_home.presentation.leaderboard.LeaderboardScreen
+import com.better.betterapp.feature_home.presentation.leaderboard.views.LeaderboardScreen
 import com.better.betterapp.feature_home.presentation.main.views.MainScreen
 import com.better.betterapp.feature_home.presentation.profile.views.ProfileScreen
 
 @Composable
-fun HomeNavGraph(navController: NavHostController, paddingValues: PaddingValues, navigateToDetail: (Int) -> Unit) {
+fun HomeNavGraph(navController: NavHostController, paddingValues: PaddingValues, navigateToDetail: (Int) -> Unit, navigateToSpeaking: () -> Unit) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -26,7 +26,7 @@ fun HomeNavGraph(navController: NavHostController, paddingValues: PaddingValues,
         }
 
         composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen(navController = navController, paddingValues = paddingValues)
+            ProfileScreen(navController = navController, paddingValues = paddingValues, navigateToDetail = navigateToDetail, navigateToSpeaking = navigateToSpeaking)
         }
     }
 }

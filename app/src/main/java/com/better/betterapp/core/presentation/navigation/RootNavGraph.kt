@@ -40,9 +40,14 @@ fun RootNavigationGraph(
         }
 
         composable(route = Graph.HOME) {
-            HomeScreen(navigateToDetail = { postId ->
-                navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
-            })
+            HomeScreen(
+                navigateToDetail = { postId ->
+                    navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
+                },
+                navigateToSpeaking = {
+                    navController.navigate(Graph.SPEAKING)
+                }
+            )
         }
 
         composable(
@@ -78,9 +83,14 @@ fun RootNavigationGrapgWithoutOnboarding(
         }
 
         composable(route = Graph.HOME) {
-            HomeScreen(navigateToDetail = { postId ->
-                navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
-            })
+            HomeScreen(
+                navigateToDetail = { postId ->
+                    navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${postId}")
+                },
+                navigateToSpeaking = {
+                    navController.navigate(Graph.SPEAKING)
+                }
+            )
         }
 
         composable(

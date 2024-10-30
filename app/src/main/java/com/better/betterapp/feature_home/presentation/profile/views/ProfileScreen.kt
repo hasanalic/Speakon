@@ -1,62 +1,67 @@
 package com.better.betterapp.feature_home.presentation.profile.views
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.better.betterapp.R
-import com.better.betterapp.core.presentation.navigation.Graph
-import com.better.betterapp.feature_home.domain.model.Profile
 import com.better.betterapp.feature_home.presentation.components.ErrorText
+import com.better.betterapp.feature_home.presentation.components.SpeakingPostItem
 import com.better.betterapp.feature_home.presentation.profile.ProfileViewModel
+import com.better.betterapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     paddingValues: PaddingValues,
     navController: NavHostController,
+    navigateToDetail: (Int) -> Unit,
+    navigateToSpeaking: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-
     val state = viewModel.stateProfile.value
 
     val context = LocalContext.current
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    val action: (Int) -> Unit = remember {
-        {
-            navController.navigate(Graph.SPEAKING_DETAIL + "?postId=${it}")
-        }
-    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -70,19 +75,11 @@ fun ProfileScreen(
                         style = MaterialTheme.typography.titleMedium
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = "Geri",
-                            tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
-                        )
-                    }
-                },
                 actions = {
                     IconButton(
                         onClick = {
-                            // günlük konu gösterilir.
+                            // gönderi oluşturmaya git
+                            navigateToSpeaking()
                         }
                     ) {
                         Icon(
@@ -118,43 +115,62 @@ fun ProfileScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .align(Alignment.Center)
                             .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 14.dp, vertical = 10.dp)
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Image(
+                            painter = painterResource(R.drawable.home),
+                            contentDescription = "Avatar",
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, Color.Gray, CircleShape)
+                        )
 
-                        ProfileBar(profile = state.profile)
+                        Spacer(modifier = Modifier.height(8.dp))
 
-//                        LazyColumn(
-//                            modifier = Modifier
-//                                .padding(horizontal = 8.dp, vertical = 4.dp)
-//                                .fillMaxSize(),
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            items(
-//                                items = state.usersSpeakingPosts,
-//                                key = { speakingPost ->
-//                                    speakingPost.postId
-//                                }
-//                            ) { speakingPost ->
-//                                SpeakingPostItem(
-//                                    speakingPost = speakingPost,
-//                                    onClick = { action(speakingPost.postId) }
-//                                )
-//                            }
-//                        }
+                        Text(
+                            text = state.profile.userName,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "Puan: ${state.profile.averageScore} | Gün: ${state.profile.maxConsecutiveDays}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Gray
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = "Speakingler",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            items(
+                                items = state.usersSpeakingPosts,
+                                key = { speakingPost ->
+                                    speakingPost.postId
+                                }
+                            ) { speakingPost ->
+                                SpeakingPostItem(
+                                    speakingPost = speakingPost,
+                                    onClick = { navigateToDetail(speakingPost.postId) }
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
     }
-
-}
-
-@Composable
-fun ProfileBar(
-    profile: Profile,
-    modifier: Modifier = Modifier
-) {
-
 }
