@@ -5,10 +5,10 @@ data class SpeakingPost(
     val userName: String,
     val avatarId: Int,
     val speakingText: String,
-    val average: String,    // ortalama puan
-    val coherance: String,  // tutarlılık puanı
-    val grammer: String,    // gramer puanı
-    var fluency: String,    // akıcılık puanı
+    val postScore: String,      // ortalama puan
+    val coherance: Int,         // tutarlılık puanı
+    val grammer: Int,           // gramer puanı
+    var fluency: Int,           // akıcılık puanı
     val createdAt: Long,
     val likes: Int
 )

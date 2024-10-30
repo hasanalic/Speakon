@@ -62,6 +62,7 @@ dependencies {
 
     //Dagger - Hilt
     implementation ("com.google.dagger:hilt-android:2.50")
+    implementation(libs.androidx.ui.text.google.fonts)
     kapt ("com.google.dagger:hilt-android-compiler:2.50")
     kapt ("androidx.hilt:hilt-compiler:1.0.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -91,7 +92,7 @@ dependencies {
     implementation ("androidx.core:core-splashscreen:1.0.1")
 
     // Fonts
-    //implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.ui.text.google.fonts)
 
     // Date - Time Picker
     implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
