@@ -18,6 +18,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.better.betterapp.R
+import com.better.betterapp.core.presentation.components.TopicDialog
 import com.better.betterapp.feature_home.presentation.components.ErrorText
 import com.better.betterapp.feature_home.presentation.components.SpeakingPostItem
 import com.better.betterapp.feature_home.presentation.main.MainViewModel
@@ -45,6 +50,8 @@ fun MainScreen(
     val state = viewModel.stateMain.value
 
     val context = LocalContext.current
+
+    var showTopic by remember { mutableStateOf(false) }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -63,7 +70,7 @@ fun MainScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            // günlük konu gösterilir.
+                            showTopic = true
                         }
                     ) {
                         Icon(
@@ -85,6 +92,11 @@ fun MainScreen(
                 .padding(top = innerPadding.calculateTopPadding())
                 .padding(bottom = paddingValues.calculateBottomPadding())
         ) {
+            if (showTopic) {
+                TopicDialog(topic = state.topic) {
+                    showTopic = false
+                }
+            }
 
             when {
                 state.isLoading -> {
