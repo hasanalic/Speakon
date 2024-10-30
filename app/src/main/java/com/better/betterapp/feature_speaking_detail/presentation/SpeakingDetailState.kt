@@ -4,7 +4,7 @@ import com.better.betterapp.feature_speaking_detail.domain.model.SpeakingDetail
 
 data class SpeakingDetailState (
     val speakingDetail: SpeakingDetail? = null,
-    val selectedText: String = "HUMAN",
+    val isSelectedTextHumanBased: Boolean = true,
     val isLoading: Boolean = false,
     val error: String = ""
 )

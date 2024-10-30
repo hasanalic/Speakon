@@ -149,7 +149,7 @@ fun LoginScreen(
                             painter = painterResource(id = if (state.avatarId != null) state.avatarId else R.drawable.ic_launcher_background),
                             contentDescription = "Avatar",
                             modifier = Modifier
-                                .size(100.dp)
+                                .size(160.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                                 .clickable {

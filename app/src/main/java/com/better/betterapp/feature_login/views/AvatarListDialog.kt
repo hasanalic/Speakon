@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
 @Composable
@@ -51,7 +52,8 @@ fun AvatarListDialog(
             ) {
                 Text(
                     text = "Bir Avatar Seç",
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 )
 
                 LazyVerticalGrid(

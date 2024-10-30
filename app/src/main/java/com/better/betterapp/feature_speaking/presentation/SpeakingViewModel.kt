@@ -4,6 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,6 +15,9 @@ class SpeakingViewModel @Inject constructor(
 
     private val _stateSpeaking = mutableStateOf(SpeakingState())
     var stateSpeaking: State<SpeakingState> = _stateSpeaking
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun onEvent(event: SpeakingEvent) {
         when(event) {
@@ -40,12 +45,17 @@ class SpeakingViewModel @Inject constructor(
 
     private fun correctText() {
         val currentText = stateSpeaking.value.speakingText
-        if (currentText.isBlank()) return
-
-        _stateSpeaking.value = _stateSpeaking.value.copy(isLoading = true)
 
         viewModelScope.launch {
+            if (currentText.isBlank()) {
+                _eventFlow.emit(
+                    UiEvent.ShowSnackbar(message = "İlk önce konu ile alakalı konuşma yapın.")
+                )
+            } else {
+                _stateSpeaking.value = _stateSpeaking.value.copy(isLoading = true)
 
+
+            }
         }
     }
 
@@ -53,10 +63,19 @@ class SpeakingViewModel @Inject constructor(
         val speakingText = stateSpeaking.value.speakingText
         val aiText = stateSpeaking.value.aiGeneratedText
 
-        if (speakingText.isNotBlank() && aiText.isNotBlank()) {
+        viewModelScope.launch {
+            if (speakingText.isNotBlank() && aiText.isNotBlank()) {
+                _eventFlow.emit(
+                    UiEvent.ShowSnackbar(message = "İki alan da dolu olmalıdır.")
+                )
+            } else {
 
-        } else {
-
+            }
         }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String): UiEvent()
+        object Shared: UiEvent()
     }
 }

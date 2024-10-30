@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 class SpeakingDetailViewModel @Inject constructor(
@@ -13,6 +15,9 @@ class SpeakingDetailViewModel @Inject constructor(
 
     private val _stateSpeakingDetail = mutableStateOf(SpeakingDetailState())
     var stateSpeakingDetail: State<SpeakingDetailState> = _stateSpeakingDetail
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     init {
         savedStateHandle.get<Int>("postId")?.let { postId ->
@@ -24,5 +29,19 @@ class SpeakingDetailViewModel @Inject constructor(
 
     private fun getSpeakingDetail(postId: Int) {
 
+    }
+
+    fun onEvent(event: SpeakingDetailEvent) {
+        when(event) {
+            is SpeakingDetailEvent.ToggleSpeakingText -> {
+                val isSelectedTextHumanBased = _stateSpeakingDetail.value.isSelectedTextHumanBased
+                _stateSpeakingDetail.value = _stateSpeakingDetail.value.copy(isSelectedTextHumanBased = !isSelectedTextHumanBased)
+            }
+        }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String): UiEvent()
+        object Shared: UiEvent()
     }
 }

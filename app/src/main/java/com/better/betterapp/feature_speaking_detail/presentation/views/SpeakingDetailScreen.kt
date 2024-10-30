@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,13 +31,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -166,7 +162,7 @@ fun SpeakingDetailScreen(
                             shape = MaterialTheme.shapes.small
                         ) {
                             Text(
-                                text = if (state.selectedText == "HUMAN") state.speakingDetail.speakingText else state.speakingDetail.aiCorrectedText,
+                                text = if (state.isSelectedTextHumanBased) state.speakingDetail.speakingText else state.speakingDetail.aiCorrectedText,
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(bottom = 16.dp)
                             )
@@ -178,7 +174,7 @@ fun SpeakingDetailScreen(
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)
                         ) {
-                            if (state.selectedText == "HUMAN") {
+                            if (state.isSelectedTextHumanBased) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()

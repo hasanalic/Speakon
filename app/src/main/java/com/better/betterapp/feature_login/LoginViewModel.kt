@@ -3,9 +3,11 @@ package com.better.betterapp.feature_login
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -40,7 +42,11 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun register() {
-
+        viewModelScope.launch {
+            _eventFlow.emit(
+                UiEvent.Registered
+            )
+        }
     }
 
     sealed class UiEvent {

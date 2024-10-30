@@ -111,7 +111,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .padding(horizontal = 36.dp)
                 .padding(top = 6.dp),
             text = onBoardingPage.description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
     }

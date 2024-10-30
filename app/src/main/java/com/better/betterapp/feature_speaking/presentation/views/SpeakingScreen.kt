@@ -20,15 +20,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,8 +48,11 @@ import com.better.betterapp.R
 import com.better.betterapp.core.presentation.components.TopicDialog
 import com.better.betterapp.feature_home.presentation.components.ErrorText
 import com.better.betterapp.feature_home.presentation.components.SpeakingPostItem
+import com.better.betterapp.feature_login.LoginViewModel
 import com.better.betterapp.feature_speaking.presentation.SpeakingEvent
 import com.better.betterapp.feature_speaking.presentation.SpeakingViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,10 +60,15 @@ fun SpeakingScreen(
     viewModel: SpeakingViewModel = hiltViewModel()
 ) {
     val state = viewModel.stateSpeaking.value
+    val eventFlow = viewModel.eventFlow
 
     var showTopic by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -121,6 +132,22 @@ fun SpeakingScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            LaunchedEffect(key1 = true) {
+                eventFlow.collectLatest { event ->
+                    when (event) {
+                        is SpeakingViewModel.UiEvent.ShowSnackbar -> {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(event.message)
+                            }
+                        }
+
+                        is SpeakingViewModel.UiEvent.Shared -> {
+                            // popUp
+                        }
+                    }
+                }
+            }
+
             if (showTopic) {
                 TopicDialog(topic = state.topic) {
                     showTopic = false
