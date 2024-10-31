@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.better.betterapp.core.presentation.navigation.home.HomeScreen
-import com.better.betterapp.feature_login.views.LoginScreen
+import com.better.betterapp.feature_login.presentation.views.LoginScreen
 import com.better.betterapp.feature_onboarding.OnboardingScreen
 import com.better.betterapp.feature_speaking.presentation.views.SpeakingScreen
 import com.better.betterapp.feature_speaking_detail.presentation.views.SpeakingDetailScreen

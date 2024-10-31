@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_login
+package com.better.betterapp.feature_login.presentation
 
 data class LoginState (
     val avatarId: Int? = null,

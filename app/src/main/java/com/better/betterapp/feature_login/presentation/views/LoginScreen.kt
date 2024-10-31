@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_login.views
+package com.better.betterapp.feature_login.presentation.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -45,8 +45,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.better.betterapp.R
 import com.better.betterapp.feature_home.presentation.components.ErrorText
 import com.better.betterapp.feature_home.presentation.util.AppDetails
-import com.better.betterapp.feature_login.LoginEvent
-import com.better.betterapp.feature_login.LoginViewModel
+import com.better.betterapp.feature_login.presentation.LoginEvent
+import com.better.betterapp.feature_login.presentation.LoginViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

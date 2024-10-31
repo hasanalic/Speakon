@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "764415637721",
+    "project_id": "betterapp-4de35",
+    "storage_bucket": "betterapp-4de35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764415637721:android:8a05ef2d50fc1179f726c8",
+        "android_client_info": {
+          "package_name": "com.better.betterapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGsJdY_rYdHI4nw1Ozcqp-j31f-uxaAec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

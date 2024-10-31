@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_login
+package com.better.betterapp.feature_login.presentation
 
 sealed class LoginEvent {
     data class ChangeAvatar(val avatarId: Int): LoginEvent()

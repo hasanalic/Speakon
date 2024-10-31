@@ -1,4 +1,4 @@
-package com.better.betterapp.feature_login.views
+package com.better.betterapp.feature_login.presentation.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
