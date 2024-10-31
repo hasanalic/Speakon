@@ -9,11 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -42,13 +40,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.better.betterapp.R
 import com.better.betterapp.core.presentation.components.TopicDialog
 import com.better.betterapp.feature_home.presentation.components.ErrorText
-import com.better.betterapp.feature_home.presentation.components.SpeakingPostItem
-import com.better.betterapp.feature_login.LoginViewModel
 import com.better.betterapp.feature_speaking.presentation.SpeakingEvent
 import com.better.betterapp.feature_speaking.presentation.SpeakingViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -168,10 +163,14 @@ fun SpeakingScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if (state.speakingText == "") {
-                            Box {
+                            Card(modifier = Modifier
+                                .fillMaxWidth(),
+                                shape = MaterialTheme.shapes.small
+                            ) {
                                 Icon(
                                     painter = painterResource(R.drawable.home),
                                     contentDescription = "Mikrofon",
@@ -184,13 +183,18 @@ fun SpeakingScreen(
                                 )
                             }
                         } else {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(150.dp),
-                                text = state.speakingText,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Card(modifier = Modifier
+                                .fillMaxWidth(),
+                                shape = MaterialTheme.shapes.small
+                            ) {
+                                Text(
+                                    text = state.speakingText,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(300.dp),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
 
                         Button(
@@ -200,13 +204,18 @@ fun SpeakingScreen(
                             Text("Düzelt")
                         }
 
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(150.dp),
-                            text = state.aiGeneratedText,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Card(modifier = Modifier
+                            .fillMaxWidth(),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                text = state.aiGeneratedText,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(300.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 }
             }
