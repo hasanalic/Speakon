@@ -1,6 +1,7 @@
 package com.better.betterapp.feature_speaking_detail.presentation.views
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.better.betterapp.R
 import com.better.betterapp.feature_home.presentation.components.ErrorText
 import com.better.betterapp.feature_home.presentation.components.RatingBox
+import com.better.betterapp.feature_speaking_detail.presentation.SpeakingDetailEvent
 import com.better.betterapp.feature_speaking_detail.presentation.SpeakingDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,9 +150,9 @@ fun SpeakingDetailScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                RatingBox(label = "Tutarlılık", rating = state.speakingDetail.coherance)
-                                RatingBox(label = "Gramer", rating = state.speakingDetail.grammer)
-                                RatingBox(label = "Akıcılık", rating = state.speakingDetail.fluency)
+                                RatingBox(label = "Tutarlılık", rating = state.speakingDetail.coheranceScore)
+                                RatingBox(label = "Gramer", rating = state.speakingDetail.grammarScore)
+                                RatingBox(label = "Akıcılık", rating = state.speakingDetail.fluencyScore)
                             }
                         }
 
@@ -158,7 +160,10 @@ fun SpeakingDetailScreen(
 
                         Card(
                             modifier = Modifier
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .clickable {
+                                    viewModel.onEvent(SpeakingDetailEvent.ToggleSpeakingText)
+                                },
                             shape = MaterialTheme.shapes.small
                         ) {
                             Text(

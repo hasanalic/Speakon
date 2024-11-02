@@ -7,10 +7,9 @@ data class SpeakingDetail (
     val topicText: String,
     val speakingText: String,
     val aiCorrectedText: String,
-    val postScore: String,
-    val coherance: Int,
-    val grammer: Int,
-    var fluency: Int,
-    val createdAt: Long,
-    val likes: Int
+    val averageSpeakingScore: String,
+    val coheranceScore: Int,
+    val grammarScore: Int,
+    var fluencyScore: Int,
+    val createdAt: Long
 )

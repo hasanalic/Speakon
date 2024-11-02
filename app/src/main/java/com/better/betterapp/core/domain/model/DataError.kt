@@ -3,6 +3,7 @@ package com.better.betterapp.core.domain.model
 sealed interface DataError: Error {
     enum class Network: DataError {
         REQUEST_TIMEOUT,
+        NOT_FOUND,
         TOO_MANY_REQUEST,
         NO_INTERNET,
         PAYLOAD_TOO_LARGE,

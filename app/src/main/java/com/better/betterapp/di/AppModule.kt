@@ -11,6 +11,10 @@ import com.better.betterapp.feature_login.domain.use_cases.LoginUseCases
 import com.better.betterapp.feature_login.domain.use_cases.RegisterUserUseCase
 import com.better.betterapp.feature_speaking.data.repository.SpeakingRepositoryImp
 import com.better.betterapp.feature_speaking.domain.repository.SpeakingRepository
+import com.better.betterapp.feature_speaking_detail.data.repository.SpeakingDetailRepositoryImp
+import com.better.betterapp.feature_speaking_detail.domain.repository.SpeakingDetailRepository
+import com.better.betterapp.feature_speaking_detail.domain.use_cases.GetSpeakingDetailUseCase
+import com.better.betterapp.feature_speaking_detail.domain.use_cases.SpeakingDetailUseCases
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -55,6 +59,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideSpeakingDetailRepository(db: FirebaseFirestore): SpeakingDetailRepository {
+        return SpeakingDetailRepositoryImp(db)
+    }
+
+    @Provides
+    @Singleton
     fun provideLoginUseCases(loginRepository: LoginRepository): LoginUseCases {
         return LoginUseCases(
             registerUserUseCase = RegisterUserUseCase(loginRepository)
@@ -67,6 +77,14 @@ object AppModule {
         return HomeUseCases(
             getSpeakingPostsUseCase = GetSpeakingPostsUseCase(homeRepository),
             getDailyTopicUseCase = GetDailyTopicUseCase(homeRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSpeakingDetailUseCases(speakingDetailRepository: SpeakingDetailRepository): SpeakingDetailUseCases {
+        return SpeakingDetailUseCases(
+            getSpeakingDetailUseCase = GetSpeakingDetailUseCase(speakingDetailRepository)
         )
     }
 }

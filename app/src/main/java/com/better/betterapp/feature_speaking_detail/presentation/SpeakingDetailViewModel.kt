@@ -4,17 +4,23 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.better.betterapp.core.domain.model.Result
+import com.better.betterapp.feature_speaking_detail.domain.use_cases.GetSpeakingDetailUseCase
+import com.better.betterapp.feature_speaking_detail.domain.use_cases.SpeakingDetailUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class SpeakingDetailViewModel @Inject constructor(
+    private val speakingDetailUseCases: SpeakingDetailUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
     private val _stateSpeakingDetail = mutableStateOf(SpeakingDetailState())
     var stateSpeakingDetail: State<SpeakingDetailState> = _stateSpeakingDetail
 
@@ -30,7 +36,18 @@ class SpeakingDetailViewModel @Inject constructor(
     private var getSpeakingDetailJob: Job? = null
 
     private fun getSpeakingDetail(postId: String) {
+        getSpeakingDetailJob?.cancel()
+        getSpeakingDetailJob = speakingDetailUseCases.getSpeakingDetailUseCase(postId).onEach { result ->
+            when(result) {
+                is Result.Success -> {
+                    _stateSpeakingDetail.value = SpeakingDetailState(speakingDetail = result.data)
+                }
 
+                is Result.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: SpeakingDetailEvent) {

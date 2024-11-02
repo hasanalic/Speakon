@@ -88,6 +88,7 @@ class LoginViewModel @Inject constructor(
             DataError.Network.SERVER_ERROR -> "SERVER_ERROR"
             DataError.Network.SERIALIZATION -> "SERIALIZATION"
             DataError.Network.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Network.NOT_FOUND -> "Bulunamadı."
         }
 
         _eventFlow.emit(
