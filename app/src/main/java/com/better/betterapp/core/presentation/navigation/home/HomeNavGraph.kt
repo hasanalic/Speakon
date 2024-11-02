@@ -11,7 +11,7 @@ import com.better.betterapp.feature_home.presentation.main.views.MainScreen
 import com.better.betterapp.feature_home.presentation.profile.views.ProfileScreen
 
 @Composable
-fun HomeNavGraph(navController: NavHostController, paddingValues: PaddingValues, navigateToDetail: (Int) -> Unit, navigateToSpeaking: () -> Unit) {
+fun HomeNavGraph(navController: NavHostController, paddingValues: PaddingValues, navigateToDetail: (String) -> Unit, navigateToSpeaking: () -> Unit) {
     NavHost(
         navController = navController,
         route = Graph.HOME,

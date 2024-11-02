@@ -53,7 +53,7 @@ import com.better.betterapp.ui.theme.AppTheme
 fun ProfileScreen(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    navigateToDetail: (Int) -> Unit,
+    navigateToDetail: (String) -> Unit,
     navigateToSpeaking: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {

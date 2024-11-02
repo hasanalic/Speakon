@@ -44,7 +44,7 @@ import com.better.betterapp.feature_home.presentation.util.AppDetails.Companion.
 fun MainScreen(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    navigateToDetail: (Int) -> Unit,
+    navigateToDetail: (String) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.stateMain.value
