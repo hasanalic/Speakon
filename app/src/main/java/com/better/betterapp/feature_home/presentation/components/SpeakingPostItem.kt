@@ -65,7 +65,7 @@ fun SpeakingPostItem(
                 )
 
                 Text(
-                    text = speakingPost.postScore.toString(),
+                    text = speakingPost.averageSpeakingScore.toString(),
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -82,9 +82,9 @@ fun SpeakingPostItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                RatingBox(label = "Tutarlılık", rating = speakingPost.coherance)
-                RatingBox(label = "Gramer", rating = speakingPost.grammer)
-                RatingBox(label = "Akıcılık", rating = speakingPost.fluency)
+                RatingBox(label = "Tutarlılık", rating = speakingPost.coheranceScore)
+                RatingBox(label = "Gramer", rating = speakingPost.grammarScore)
+                RatingBox(label = "Akıcılık", rating = speakingPost.fluencyScore)
             }
         }
     }

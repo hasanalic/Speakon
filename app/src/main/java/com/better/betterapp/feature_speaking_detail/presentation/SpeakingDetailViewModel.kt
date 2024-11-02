@@ -4,11 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class SpeakingDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -20,14 +22,14 @@ class SpeakingDetailViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
-        savedStateHandle.get<Int>("postId")?.let { postId ->
+        savedStateHandle.get<String>("postId")?.let { postId ->
             getSpeakingDetail(postId)
         }
     }
 
     private var getSpeakingDetailJob: Job? = null
 
-    private fun getSpeakingDetail(postId: Int) {
+    private fun getSpeakingDetail(postId: String) {
 
     }
 

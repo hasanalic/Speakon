@@ -9,10 +9,11 @@ import com.better.betterapp.feature_speaking.domain.repository.SpeakingRepositor
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class SpeakingRepositoryImp : SpeakingRepository {
-    val db = FirebaseFirestore.getInstance()
-
+class SpeakingRepositoryImp @Inject constructor(
+    private val db: FirebaseFirestore
+): SpeakingRepository {
     override suspend fun correctText(text: String): Result<String, DataError.Network> {
         // Gemini
         TODO("Not yet implemented")
@@ -20,7 +21,7 @@ class SpeakingRepositoryImp : SpeakingRepository {
 
     override suspend fun publishSpeaking(speakingPost: SpeakingPost, aiCorrectedText: String): Result<Unit, DataError.Network> {
         return try {
-            val postScore = (speakingPost.coherance + speakingPost.grammer + speakingPost.fluency) / 3.0
+            val postScore = (speakingPost.coheranceScore + speakingPost.grammarScore + speakingPost.fluencyScore) / 3.0
 
             val firestoreSpeakingPost = FirestoreSpeakingPost(
                 userId = speakingPost.userId,
@@ -29,10 +30,10 @@ class SpeakingRepositoryImp : SpeakingRepository {
                 userName = speakingPost.userName,
                 originalText = speakingPost.speakingText,
                 correctedText = aiCorrectedText,
-                coheranceScore = speakingPost.coherance,
-                grammarScore = speakingPost.grammer,
-                fluencyScore = speakingPost.fluency,
-                averageScore = postScore,
+                coheranceScore = speakingPost.coheranceScore,
+                grammarScore = speakingPost.grammarScore,
+                fluencyScore = speakingPost.fluencyScore,
+                averageSpeakingScore = postScore,
                 createdAt = speakingPost.createdAt
             )
 

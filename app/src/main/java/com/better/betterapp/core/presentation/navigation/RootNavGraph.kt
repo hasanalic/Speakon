@@ -95,7 +95,7 @@ fun RootNavigationGrapgWithoutOnboarding(
 
         composable(
             route = Graph.SPEAKING_DETAIL + "?postId={postId}",
-            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            arguments = listOf(navArgument("postId") { type = NavType.StringType })
         ) {
             SpeakingDetailScreen()
         }

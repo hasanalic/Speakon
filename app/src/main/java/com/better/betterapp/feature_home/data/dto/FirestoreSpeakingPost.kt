@@ -7,10 +7,10 @@ data class FirestoreSpeakingPost(
     val avatarId: Int,
     val userName: String,
     val originalText: String,
-    val correctedText: String?,
+    val correctedText: String,
     val coheranceScore: Int,
     val grammarScore: Int,
     val fluencyScore: Int,
-    val averageScore: Double,
+    val averageSpeakingScore: Double,
     val createdAt: Long
 )

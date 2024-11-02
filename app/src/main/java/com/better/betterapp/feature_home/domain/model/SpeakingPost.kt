@@ -7,9 +7,9 @@ data class SpeakingPost(
     val userName: String,
     val avatarId: Int,
     val speakingText: String,
-    val postScore: Double,
-    val coherance: Int,
-    val grammer: Int,
-    var fluency: Int,
+    val averageSpeakingScore: Double,
+    val coheranceScore: Int,
+    val grammarScore: Int,
+    var fluencyScore: Int,
     val createdAt: Long
 )

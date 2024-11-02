@@ -42,6 +42,7 @@ class LoginViewModel @Inject constructor(
                 _stateLogin.value = _stateLogin.value.copy(userName = event.newName)
             }
             is LoginEvent.Register -> {
+                _stateLogin.value = _stateLogin.value.copy(isLoading = true)
                 register()
             }
         }
