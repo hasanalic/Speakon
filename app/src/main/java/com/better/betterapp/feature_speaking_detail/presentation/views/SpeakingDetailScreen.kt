@@ -57,9 +57,12 @@ import com.better.betterapp.feature_speaking_detail.presentation.SpeakingDetailV
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeakingDetailScreen(
+    navigateToMagic: (Int, String, String, String) -> Unit,
     viewModel: SpeakingDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.stateSpeakingDetail.value
+
+    var showMagic by remember { mutableStateOf(false) }
 
     var rotated by remember { mutableStateOf(false) }
 
@@ -108,13 +111,13 @@ fun SpeakingDetailScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            //
+                            showMagic = true
                         }
                     ) {
                         Icon(
                             modifier = Modifier.size(22.dp),
                             imageVector = ImageVector.vectorResource(id = R.drawable.magic),
-                            contentDescription = "Paylaş",
+                            contentDescription = "Oluştur",
                             tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
                         )
                     }
@@ -145,6 +148,16 @@ fun SpeakingDetailScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(horizontal = 12.dp, vertical = 10.dp)
                     ) {
+                        if (showMagic) {
+                            Sections(onDismiss = { showMagic = false }) { sectionId ->
+                                navigateToMagic(
+                                    sectionId,
+                                    state.speakingDetail.topicText,
+                                    state.speakingDetail.speakingText,
+                                    state.speakingDetail.aiCorrectedText
+                                )
+                            }
+                        }
 
                         Card(
                             modifier = Modifier
@@ -173,7 +186,9 @@ fun SpeakingDetailScreen(
                             shape = MaterialTheme.shapes.small
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth().padding(6.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(6.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 RatingBox(label = "Tutarlılık", rating = state.speakingDetail.coheranceScore)
