@@ -11,6 +11,9 @@ import com.better.betterapp.feature_login.domain.use_cases.LoginUseCases
 import com.better.betterapp.feature_login.domain.use_cases.RegisterUserUseCase
 import com.better.betterapp.feature_speaking.data.repository.SpeakingRepositoryImp
 import com.better.betterapp.feature_speaking.domain.repository.SpeakingRepository
+import com.better.betterapp.feature_speaking.domain.use_cases.CorrectTextUseCase
+import com.better.betterapp.feature_speaking.domain.use_cases.PublishSpeakingUseCase
+import com.better.betterapp.feature_speaking.domain.use_cases.SpeakingUseCases
 import com.better.betterapp.feature_speaking_detail.data.repository.SpeakingDetailRepositoryImp
 import com.better.betterapp.feature_speaking_detail.domain.repository.SpeakingDetailRepository
 import com.better.betterapp.feature_speaking_detail.domain.use_cases.GetSpeakingDetailUseCase
@@ -85,6 +88,15 @@ object AppModule {
     fun provideSpeakingDetailUseCases(speakingDetailRepository: SpeakingDetailRepository): SpeakingDetailUseCases {
         return SpeakingDetailUseCases(
             getSpeakingDetailUseCase = GetSpeakingDetailUseCase(speakingDetailRepository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSpeakingUseCases(speakingRepository: SpeakingRepository): SpeakingUseCases {
+        return SpeakingUseCases(
+            correctTextUseCase = CorrectTextUseCase(speakingRepository),
+            publishSpeakingUseCase = PublishSpeakingUseCase(speakingRepository)
         )
     }
 }

@@ -4,13 +4,20 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.better.betterapp.core.domain.model.Result
+import com.better.betterapp.feature_speaking.domain.use_cases.SpeakingUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SpeakingViewModel @Inject constructor(
-
+    private val speakingUseCases: SpeakingUseCases
 ): ViewModel() {
 
     private val _stateSpeaking = mutableStateOf(SpeakingState())
@@ -43,20 +50,47 @@ class SpeakingViewModel @Inject constructor(
         _stateSpeaking.value = _stateSpeaking.value.copy(aiGeneratedText = newText)
     }
 
+    private var correctTextJob: Job? = null
+
     private fun correctText() {
-        val currentText = stateSpeaking.value.speakingText
+        correctTextJob?.cancel()
 
-        viewModelScope.launch {
-            if (currentText.isBlank()) {
-                _eventFlow.emit(
-                    UiEvent.ShowSnackbar(message = "İlk önce konu ile alakalı konuşma yapın.")
-                )
-            } else {
-                _stateSpeaking.value = _stateSpeaking.value.copy(isLoading = true)
+        val currentSpeakingText = _stateSpeaking.value.speakingText
+//        val topic = _stateSpeaking.value.topic
+        val topic = "What is your number one goal for this year?"
 
+        _stateSpeaking.value = _stateSpeaking.value.copy(isLoading = true)
 
+        correctTextJob = speakingUseCases.correctTextUseCase(currentSpeakingText, topic).onEach { result ->
+            when(result) {
+                is Result.Success -> {
+                    val correctedTextResult = result.data
+
+                    val averageSpeakingScore = (correctedTextResult.coheranceScore + correctedTextResult.grammarScore + correctedTextResult.fluencyScore) / 3.0
+
+                    println("aiGeneratedText -> ${correctedTextResult.correctedText}")
+                    println("coheranceScore -> ${correctedTextResult.coheranceScore}")
+                    println("grammarScore -> ${correctedTextResult.grammarScore}")
+                    println("fluencyScore -> ${correctedTextResult.fluencyScore}")
+                    println("averageSpeakingScore -> ${averageSpeakingScore}")
+
+                    _stateSpeaking.value = _stateSpeaking.value.copy(
+                        aiGeneratedText = correctedTextResult.correctedText,
+                        coheranceScore = correctedTextResult.coheranceScore,
+                        grammarScore = correctedTextResult.grammarScore,
+                        fluencyScore = correctedTextResult.fluencyScore,
+                        averageSpeakingScore = averageSpeakingScore,
+                        isLoading = false
+                    )
+                }
+
+                is Result.Error -> {
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(message = "Bir hata meydana geldi.")
+                    )
+                }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun share() {

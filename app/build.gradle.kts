@@ -54,10 +54,15 @@ android {
 
 dependencies {
 
+    implementation("androidx.compose.material:material-icons-extended:1.7.5")
+
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    // Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
 
     // Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

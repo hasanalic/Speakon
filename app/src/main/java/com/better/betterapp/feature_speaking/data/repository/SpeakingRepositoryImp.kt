@@ -2,27 +2,61 @@ package com.better.betterapp.feature_speaking.data.repository
 
 import com.better.betterapp.core.data.Collections
 import com.better.betterapp.core.domain.model.DataError
+import com.better.betterapp.core.domain.model.Prompts
 import com.better.betterapp.core.domain.model.Result
 import com.better.betterapp.feature_home.data.dto.FirestoreSpeakingPost
 import com.better.betterapp.feature_home.domain.model.SpeakingPost
+import com.better.betterapp.feature_speaking.data.CorrectedTextResult
 import com.better.betterapp.feature_speaking.domain.repository.SpeakingRepository
+import com.google.ai.client.generativeai.GenerativeModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class SpeakingRepositoryImp @Inject constructor(
     private val db: FirebaseFirestore
 ): SpeakingRepository {
-    override suspend fun correctText(text: String): Result<String, DataError.Network> {
-        // Gemini
-        TODO("Not yet implemented")
+    override fun correctText(speakingText: String, topic: String): Flow<Result<CorrectedTextResult, DataError.Network>> = flow {
+        val generativeModel = GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = "AIzaSyDcWEwm6iaPPN1Pdb_5GYbkYshjjU77hQo"
+        )
+
+        val prompt = Prompts.correctSpeakingText(speakingText, topic)
+
+        try {
+            val response = generativeModel.generateContent(prompt)
+            println(response.text)
+
+            var correctedText = Regex("Corrected Text: (.+)").find(response.text!!)?.groupValues?.get(1)?.trim() ?: ""
+            val coherenceScore = Regex("Coherence Score: (\\d+)").find(response.text!!)?.groupValues?.get(1)?.toInt() ?: 0
+            val grammarScore = Regex("Grammar Score: (\\d+)").find(response.text!!)?.groupValues?.get(1)?.toInt() ?: 0
+            val fluencyScore = Regex("Fluency Score: (\\d+)").find(response.text!!)?.groupValues?.get(1)?.toInt() ?: 0
+
+            correctedText = trimQuotes(correctedText)
+
+            emit(Result.Success(
+                CorrectedTextResult(
+                    correctedText = correctedText,
+                    coheranceScore = coherenceScore,
+                    grammarScore = grammarScore,
+                    fluencyScore = fluencyScore
+                )
+            ))
+        } catch (e: Exception) {
+            emit(Result.Error(DataError.Network.UNKNOWN))
+        }
     }
 
-    override suspend fun publishSpeaking(speakingPost: SpeakingPost, aiCorrectedText: String): Result<Unit, DataError.Network> {
-        return try {
-            val postScore = (speakingPost.coheranceScore + speakingPost.grammarScore + speakingPost.fluencyScore) / 3.0
+    private fun trimQuotes(text: String): String {
+        return text.removePrefix("\"").removeSuffix("\"")
+    }
 
+    override fun publishSpeaking(speakingPost: SpeakingPost, aiCorrectedText: String): Flow<Result<Unit, DataError.Network>> = flow {
+        try {
             val firestoreSpeakingPost = FirestoreSpeakingPost(
                 userId = speakingPost.userId,
                 topicId = speakingPost.postId,
@@ -33,7 +67,7 @@ class SpeakingRepositoryImp @Inject constructor(
                 coheranceScore = speakingPost.coheranceScore,
                 grammarScore = speakingPost.grammarScore,
                 fluencyScore = speakingPost.fluencyScore,
-                averageSpeakingScore = postScore,
+                averageSpeakingScore = speakingPost.averageSpeakingScore,
                 createdAt = speakingPost.createdAt
             )
 
@@ -46,10 +80,10 @@ class SpeakingRepositoryImp @Inject constructor(
             incrementUserConsecutiveDays(speakingPost.userId)
             updateUserAverageScore(speakingPost.userId)
 
-            Result.Success(Unit)
+            emit(Result.Success(Unit))
 
         } catch (e: Exception) {
-            Result.Error(DataError.Network.UNKNOWN)
+            emit(Result.Error(DataError.Network.UNKNOWN))
         }
     }
 
@@ -67,17 +101,22 @@ class SpeakingRepositoryImp @Inject constructor(
             .get()
             .await()
 
-        val totalScore = speakingPosts.documents.sumOf { it.getDouble("averageScore") ?: 0.0 }
+        val totalScore = speakingPosts.documents.sumOf { it.getDouble("averageSpeakingScore") ?: 0.0 }
         val speakingPostCount = speakingPosts.size()
-        val newAverageScore = if (speakingPostCount > 0) totalScore / speakingPostCount else 0.0
+        val newAverageSpeakingScore = if (speakingPostCount > 0) totalScore / speakingPostCount else 0.0
 
-        userRef.update("averageScore", newAverageScore).await()
-        TODO("""
-            averageScore -> averageSpeakingScore olsun.
-            updateUserAverageScore fonksiyonu ilgili kişinin hem averageSpeakingScore hem de averageScore değerini güncellesin.
-            updateUserAverageScore fonksiyonu ilgili kişinin averageSpeakingScore ve highestConsecutiveDays değerlerini alsın
-            averageScore ise kullanıcının (averageSpeakingScore(8.8) * Y) + (highestConsecutiveDays * X) formülüyle
-            hesaplanan ve leaderBoard'da çekerken kullanacağımız int bir sayı olsun. (sonuçlar ondalıklı çıkarsa tam sayıya çevrilir)
-        """.trimIndent())
+        val highestConsecutiveDays = userRef.get().await().getLong("highestConsecutiveDays")?.toInt() ?: 0
+
+        val averageScoreMultiplier = 0.4
+        val consecutiveDaysMultiplier = 0.6
+
+        val newAverageScore = (newAverageSpeakingScore * averageScoreMultiplier) + (highestConsecutiveDays * consecutiveDaysMultiplier)
+
+        userRef.update(
+            mapOf(
+                "averageSpeakingScore" to newAverageSpeakingScore,
+                "averageScore" to newAverageScore
+            )
+        ).await()
     }
 }
