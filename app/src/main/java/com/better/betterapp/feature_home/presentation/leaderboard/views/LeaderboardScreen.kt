@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -81,14 +80,12 @@ fun LeaderboardScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         items(
-                            items = state.users,
-                            key = { user ->
-                                user.userId
-                            }
-                        ) { user ->
+                            count = state.users.size
+                        ) { index ->
+                            val user = state.users[index]
                             LeaderboardItem(
                                 user = user,
-                                rank = 1
+                                rank = index + 1
                             )
                         }
                     }

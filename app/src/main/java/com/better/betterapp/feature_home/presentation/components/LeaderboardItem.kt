@@ -31,7 +31,7 @@ fun LeaderboardItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 16.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -45,7 +45,7 @@ fun LeaderboardItem(
             painter = painterResource(user.avatarId),
             contentDescription = "Avatar",
             modifier = Modifier
-                .size(40.dp)
+                .size(48.dp)
                 .clip(CircleShape)
         )
 

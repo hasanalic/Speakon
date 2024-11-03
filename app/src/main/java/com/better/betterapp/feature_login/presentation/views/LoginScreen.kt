@@ -73,7 +73,8 @@ fun LoginScreen(
                 R.drawable.man_four,
                 R.drawable.woman_four,
                 R.drawable.man_five,
-                R.drawable.man_six
+                R.drawable.man_six,
+                R.drawable.man_seven
             )
         )
     }
