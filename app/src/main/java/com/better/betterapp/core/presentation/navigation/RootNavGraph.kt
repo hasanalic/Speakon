@@ -53,7 +53,7 @@ fun RootNavigationGraph(
 
         composable(
             route = Graph.SPEAKING_DETAIL + "?postId={postId}",
-            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            arguments = listOf(navArgument("postId") { type = NavType.StringType })
         ) {
             SpeakingDetailScreen(
                 navigateToMagic = { funId: Int, topic: String, speakingText: String, aiCorrectedText: String ->

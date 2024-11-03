@@ -141,7 +141,7 @@ fun LoginScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            text = "Her Gün Bir Konu, Her Gelişimde Sen!",
                             style = MaterialTheme.typography.titleMedium,
                             textAlign = TextAlign.Center
                         )
