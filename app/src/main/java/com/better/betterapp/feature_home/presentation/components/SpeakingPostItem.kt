@@ -65,7 +65,7 @@ fun SpeakingPostItem(
                 )
 
                 Text(
-                    text = speakingPost.averageSpeakingScore.toString(),
+                    text = String.format("%.1f", speakingPost.averageSpeakingScore),
                     style = MaterialTheme.typography.titleSmall
                 )
             }

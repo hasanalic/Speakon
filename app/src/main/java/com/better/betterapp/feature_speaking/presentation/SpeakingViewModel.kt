@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.better.betterapp.core.domain.model.Result
 import com.better.betterapp.feature_home.domain.model.SpeakingPost
-import com.better.betterapp.feature_login.domain.use_cases.HomeUseCases
+import com.better.betterapp.feature_home.domain.use_cases.HomeUseCases
 import com.better.betterapp.feature_speaking.domain.use_cases.SpeakingUseCases
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel

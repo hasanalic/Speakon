@@ -1,12 +1,15 @@
 package com.better.betterapp.di
 
 import com.better.betterapp.feature_home.data.repository.HomeRepositoryImp
+import com.better.betterapp.feature_home.data.repository.LeaderboardRepositoryImp
 import com.better.betterapp.feature_home.domain.repository.HomeRepository
+import com.better.betterapp.feature_home.domain.repository.LeaderboardRepository
 import com.better.betterapp.feature_home.domain.use_cases.GetDailyTopicUseCase
 import com.better.betterapp.feature_home.domain.use_cases.GetSpeakingPostsUseCase
+import com.better.betterapp.feature_home.domain.use_cases.GetUsersUseCase
 import com.better.betterapp.feature_login.data.repository.LoginRepositoryImp
 import com.better.betterapp.feature_login.domain.repository.LoginRepository
-import com.better.betterapp.feature_login.domain.use_cases.HomeUseCases
+import com.better.betterapp.feature_home.domain.use_cases.HomeUseCases
 import com.better.betterapp.feature_login.domain.use_cases.LoginUseCases
 import com.better.betterapp.feature_login.domain.use_cases.RegisterUserUseCase
 import com.better.betterapp.feature_speaking.data.repository.SpeakingRepositoryImp
@@ -68,6 +71,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideLeaderboardRepository(db: FirebaseFirestore): LeaderboardRepository {
+        return LeaderboardRepositoryImp(db)
+    }
+
+    @Provides
+    @Singleton
     fun provideLoginUseCases(loginRepository: LoginRepository): LoginUseCases {
         return LoginUseCases(
             registerUserUseCase = RegisterUserUseCase(loginRepository)
@@ -76,10 +85,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHomeUseCases(homeRepository: HomeRepository): HomeUseCases {
+    fun provideHomeUseCases(homeRepository: HomeRepository, leaderboardRepository: LeaderboardRepository): HomeUseCases {
         return HomeUseCases(
             getSpeakingPostsUseCase = GetSpeakingPostsUseCase(homeRepository),
-            getDailyTopicUseCase = GetDailyTopicUseCase(homeRepository)
+            getDailyTopicUseCase = GetDailyTopicUseCase(homeRepository),
+            getUsersUseCase = GetUsersUseCase(leaderboardRepository)
         )
     }
 
