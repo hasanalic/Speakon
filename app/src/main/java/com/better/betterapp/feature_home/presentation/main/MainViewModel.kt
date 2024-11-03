@@ -21,7 +21,26 @@ class MainViewModel @Inject constructor(
     val stateMain: State<MainState> = _stateMain
 
     init {
+        getDailyTopic()
         getSpeakingPosts()
+    }
+
+    private var getDailyTopicJob: Job? = null
+
+    private fun getDailyTopic() {
+        val topicId = "aBaWq3T5VvixRucYms9k"
+        getDailyTopicJob?.cancel()
+        getDailyTopicJob = homeUseCases.getDailyTopicUseCase(topicId).onEach { result ->
+            when(result) {
+                is Result.Success -> {
+                    _stateMain.value = _stateMain.value.copy(topic = result.data)
+                }
+
+                is Result.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private var getSpeakingPostsJob: Job? = null
@@ -33,7 +52,7 @@ class MainViewModel @Inject constructor(
         getSpeakingPostsJob = homeUseCases.getSpeakingPostsUseCase().onEach { result ->
             when(result) {
                 is Result.Success -> {
-                    _stateMain.value = MainState(speakingPosts = result.data)
+                    _stateMain.value = _stateMain.value.copy(isLoading = false, speakingPosts = result.data)
                 }
 
                 is Result.Error -> {

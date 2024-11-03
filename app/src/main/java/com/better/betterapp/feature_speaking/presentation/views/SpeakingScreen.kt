@@ -227,8 +227,9 @@ fun SpeakingScreen(
                                     text = "Sağ alttaki mikrofona tıklayarak günün konusu ile alakalı bir konuşma yap.",
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(300.dp),
-                                    style = MaterialTheme.typography.bodyMedium
+                                        .height(300.dp)
+                                        .padding(6.dp),
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                             }
                         } else {
@@ -240,8 +241,9 @@ fun SpeakingScreen(
                                     text = state.speakingText,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(300.dp),
-                                    style = MaterialTheme.typography.bodyMedium
+                                        .height(300.dp)
+                                        .padding(6.dp),
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
 
                                 if (state.coheranceScore != null && state.grammarScore != null && state.fluencyScore != null) {
@@ -272,8 +274,9 @@ fun SpeakingScreen(
                                 text = state.aiGeneratedText,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(300.dp),
-                                style = MaterialTheme.typography.bodyMedium
+                                    .height(300.dp)
+                                    .padding(6.dp),
+                                style = MaterialTheme.typography.bodyLarge
                             )
                         }
 
