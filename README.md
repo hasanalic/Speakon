@@ -1,6 +1,6 @@
 # BTK Akademi HACKATHON 2024 | Better Takımı - Speakon Mobil Uygulaması (Hasan Ali Çalışkan - Abdurrahim Çalışkan)
 
-## Youtube -> https://youtu.be/2HC8_U0qD_s
+## Youtube -> https://www.youtube.com/watch?v=R1WCgkqn2Uo
 
 İngilizce konuşma becerilerini geliştirmek isteyenler için özel olarak tasarlanmış bu uygulama, kullanıcılarına her gün belirlenen bir konuda kendilerini İngilizce ifade etme fırsatı sunuyor. Her gün tüm kullanıcıların erişebileceği yeni bir konuşma konusu belirleniyor. Örneğin, "Why do people like watching movies?" gibi bir konu, 24 saat boyunca geçerli oluyor. Bu sayede kullanıcılar aynı konuda kendi düşüncelerini ifade etme ve başkalarının fikirlerini dinleme olanağına sahip oluyorlar.
 
