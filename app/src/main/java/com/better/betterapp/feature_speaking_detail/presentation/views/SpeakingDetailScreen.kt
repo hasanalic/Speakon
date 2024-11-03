@@ -270,7 +270,7 @@ fun SpeakingDetailScreen(
                                     horizontalArrangement = Arrangement.Center
                                 ) {
                                     Image(
-                                        painter = painterResource(R.drawable.home),
+                                        painter = painterResource(R.drawable.ai),
                                         contentDescription = "AI",
                                         modifier = Modifier
                                             .size(40.dp)
