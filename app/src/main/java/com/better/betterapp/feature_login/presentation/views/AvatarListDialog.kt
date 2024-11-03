@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -39,15 +40,15 @@ fun AvatarListDialog(
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            modifier = Modifier,
-            shape = MaterialTheme.shapes.small,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(vertical = 36.dp),
+            shape = MaterialTheme.shapes.small
         ) {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
-                    .wrapContentHeight()
-                    .wrapContentWidth(),
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(

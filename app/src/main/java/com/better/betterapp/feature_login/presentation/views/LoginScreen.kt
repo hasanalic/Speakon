@@ -64,14 +64,16 @@ fun LoginScreen(
     val avatarIdList by remember {
         mutableStateOf(
             listOf(
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home,
-                R.drawable.home
+                R.drawable.man_one,
+                R.drawable.woman_one,
+                R.drawable.man_two,
+                R.drawable.woman_two,
+                R.drawable.man_three,
+                R.drawable.woman_three,
+                R.drawable.man_four,
+                R.drawable.woman_four,
+                R.drawable.man_five,
+                R.drawable.man_six
             )
         )
     }
@@ -146,7 +148,7 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(40.dp))
 
                         Image(
-                            painter = painterResource(id = if (state.avatarId != null) state.avatarId else R.drawable.ic_launcher_background),
+                            painter = painterResource(id = if (state.avatarId != null) state.avatarId else R.drawable.default_avatar),
                             contentDescription = "Avatar",
                             modifier = Modifier
                                 .size(160.dp)

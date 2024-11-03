@@ -17,12 +17,12 @@ sealed class BottomBarScreen(
     object Leaderboard: BottomBarScreen(
         route = "leaderboard",
         title = "Skor Tablosu",
-        icon = R.drawable.home
+        icon = R.drawable.leaderboard
     )
 
     object Profile: BottomBarScreen(
         route = "profile",
         title = "Profil",
-        icon = R.drawable.home
+        icon = R.drawable.profile
     )
 }

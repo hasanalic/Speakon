@@ -144,7 +144,7 @@ fun SpeakingScreen(
                     ) {
                         Icon(
                             modifier = Modifier.size(22.dp),
-                            imageVector = ImageVector.vectorResource(id = R.drawable.home),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
                             contentDescription = "Konu",
                             tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
                         )
@@ -157,7 +157,7 @@ fun SpeakingScreen(
                     ) {
                         Icon(
                             modifier = Modifier.size(22.dp),
-                            imageVector = ImageVector.vectorResource(id = R.drawable.home),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.send),
                             contentDescription = "Paylaş",
                             tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
                         )

@@ -9,6 +9,7 @@ import com.better.betterapp.core.presentation.navigation.Graph
 import com.better.betterapp.core.presentation.navigation.RootNavigationGrapgWithoutOnboarding
 import com.better.betterapp.core.presentation.navigation.RootNavigationGraph
 import com.better.betterapp.core.presentation.shared_preference.CustomSharedPreferences
+import com.better.betterapp.ui.theme.AppTheme
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,12 +25,15 @@ class MainActivity : ComponentActivity() {
 
         val onBoardingCompleted = customSharedPreferences.getOnBoardingState()!!
         val startDestination = if (isUserLoggedIn()) Graph.HOME else Graph.LOGIN
+        //val startDestination = Graph.LOGIN
 
         setContent {
-            if (onBoardingCompleted) {
-                RootNavigationGrapgWithoutOnboarding(navController = rememberNavController(), startDestination)
-            } else {
-                RootNavigationGraph(navController = rememberNavController())
+            AppTheme {
+                if (onBoardingCompleted) {
+                    RootNavigationGrapgWithoutOnboarding(navController = rememberNavController(), startDestination)
+                } else {
+                    RootNavigationGraph(navController = rememberNavController())
+                }
             }
         }
     }

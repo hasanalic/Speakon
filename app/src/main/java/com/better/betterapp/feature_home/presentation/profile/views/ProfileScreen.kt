@@ -78,13 +78,12 @@ fun ProfileScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            // gönderi oluşturmaya git
                             navigateToSpeaking()
                         }
                     ) {
                         Icon(
-                            modifier = Modifier.size(22.dp),
-                            imageVector = ImageVector.vectorResource(id = R.drawable.home),
+                            modifier = Modifier.size(26.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.speak),
                             contentDescription = "Gönderi Oluştur",
                             tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
                         )
