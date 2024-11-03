@@ -1,5 +1,7 @@
 package com.better.betterapp.feature_speaking_detail.presentation.views
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,12 +31,19 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -52,6 +61,23 @@ fun SpeakingDetailScreen(
 ) {
     val state = viewModel.stateSpeakingDetail.value
 
+    var rotated by remember { mutableStateOf(false) }
+
+    val rotation by animateFloatAsState(
+        targetValue = if (rotated) 180f else 0f,
+        animationSpec = tween(500), label = ""
+    )
+
+    val animateFront by animateFloatAsState(
+        targetValue = if (!rotated) 1f else 0f,
+        animationSpec = tween(500), label = ""
+    )
+
+    val animateBack by animateFloatAsState(
+        targetValue = if (rotated) 1f else 0f,
+        animationSpec = tween(500), label = ""
+    )
+
     val context = LocalContext.current
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -62,7 +88,7 @@ fun SpeakingDetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "",
+                        "Gönderi Detayı",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.titleMedium
@@ -80,18 +106,18 @@ fun SpeakingDetailScreen(
                     }
                 },
                 actions = {
-//                    IconButton(
-//                        onClick = {
-//                            // paylaş
-//                        }
-//                    ) {
-//                        Icon(
-//                            modifier = Modifier.size(22.dp),
-//                            imageVector = ImageVector.vectorResource(id = R.drawable.home),
-//                            contentDescription = "Paylaş",
-//                            tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
-//                        )
-//                    }
+                    IconButton(
+                        onClick = {
+                            //
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(22.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.magic),
+                            contentDescription = "Paylaş",
+                            tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
+                        )
+                    }
                 },
                 scrollBehavior = scrollBehavior
             )
@@ -126,7 +152,7 @@ fun SpeakingDetailScreen(
                                 .align(Alignment.CenterHorizontally),
                             shape = MaterialTheme.shapes.small
                         ) {
-                            Row() {
+                            Row(modifier = Modifier.padding(8.dp)) {
                                 Text(
                                     text = "Konu: ",
                                     style = MaterialTheme.typography.titleSmall
@@ -147,7 +173,7 @@ fun SpeakingDetailScreen(
                             shape = MaterialTheme.shapes.small
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth().padding(6.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 RatingBox(label = "Tutarlılık", rating = state.speakingDetail.coheranceScore)
@@ -161,16 +187,33 @@ fun SpeakingDetailScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .graphicsLayer {
+                                    rotationY = rotation
+                                    cameraDistance = 12 * density
+                                }
                                 .clickable {
+                                    rotated = !rotated
                                     viewModel.onEvent(SpeakingDetailEvent.ToggleSpeakingText)
                                 },
                             shape = MaterialTheme.shapes.small
                         ) {
-                            Text(
-                                text = if (state.isSelectedTextHumanBased) state.speakingDetail.speakingText else state.speakingDetail.aiCorrectedText,
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(bottom = 16.dp)
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .padding(all = 2.dp)
+                                    .fillMaxWidth()
+                                    .graphicsLayer {
+                                        alpha = if (rotated) animateBack else animateFront
+                                        rotationY = rotation
+                                    },
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = if (state.isSelectedTextHumanBased) state.speakingDetail.speakingText else state.speakingDetail.aiCorrectedText,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.padding(12.dp)
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.padding(vertical = 6.dp))
@@ -184,30 +227,32 @@ fun SpeakingDetailScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 8.dp, horizontal = 16.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
                                     Image(
-                                        painter = painterResource(R.drawable.home),
+                                        painter = painterResource(state.speakingDetail.avatarId),
                                         contentDescription = "Avatar",
                                         modifier = Modifier
                                             .size(40.dp)
                                             .clip(CircleShape)
                                     )
 
-                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Spacer(modifier = Modifier.width(12.dp))
 
                                     Text(
                                         text = state.speakingDetail.userName,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier.weight(1f)
+                                        style = MaterialTheme.typography.titleMedium
                                     )
                                 }
+
                             } else {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 8.dp, horizontal = 16.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
                                     Image(
                                         painter = painterResource(R.drawable.home),
@@ -217,12 +262,11 @@ fun SpeakingDetailScreen(
                                             .clip(CircleShape)
                                     )
 
-                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Spacer(modifier = Modifier.width(12.dp))
 
                                     Text(
                                         text = "Yapay Zeka",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier.weight(1f)
+                                        style = MaterialTheme.typography.titleMedium
                                     )
                                 }
                             }
