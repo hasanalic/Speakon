@@ -119,10 +119,10 @@ class SpeakingRepositoryImp @Inject constructor(
 
         val highestConsecutiveDays = userRef.get().await().getLong("highestConsecutiveDays")?.toInt() ?: 0
 
-        val averageScoreMultiplier = 0.4
-        val consecutiveDaysMultiplier = 0.6
+        val averageScoreMultiplier = 40
+        val consecutiveDaysMultiplier = 60
 
-        val newAverageScore = (newAverageSpeakingScore * averageScoreMultiplier) + (highestConsecutiveDays * consecutiveDaysMultiplier)
+        val newAverageScore = (newAverageSpeakingScore * averageScoreMultiplier).toInt() + (highestConsecutiveDays * consecutiveDaysMultiplier)
 
         userRef.update(
             mapOf(

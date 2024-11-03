@@ -25,7 +25,7 @@ class ProfileRepositoryImp @Inject constructor(
                     userId = data["userId"] as? String ?: "",
                     userName = data["userName"] as? String ?: "",
                     avatarId = (data["avatarId"] as? Int)?.toString() ?: "",
-                    averageScore = (data["averageScore"] as? Int)?.toString() ?: "0",
+                    averageScore = data["averageScore"] as? Number ?: 0,
                     highestConsecutiveDays = data["highestConsecutiveDays"] as? Number ?: 0
                 )
             } ?: throw Exception("User not found")
