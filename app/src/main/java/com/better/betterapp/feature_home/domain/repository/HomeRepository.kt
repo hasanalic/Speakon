@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
     fun getSpeakingPosts(): Flow<Result<List<SpeakingPost>, DataError.Network>>
 
-    fun getDailyTopic(): Flow<Result<String, DataError.Network>>
+    fun getDailyTopic(topicId: String): Flow<Result<String, DataError.Network>>
 }

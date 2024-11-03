@@ -31,7 +31,22 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override fun getDailyTopic(): Flow<Result<String, DataError.Network>> = flow {
-        TODO("Not yet implemented")
+    override fun getDailyTopic(topicId: String): Flow<Result<String, DataError.Network>> = flow {
+        try {
+            val topicSnapshot = db.collection(Collections.TOPICS)
+                .whereEqualTo("topicId", topicId)
+                .get()
+                .await()
+
+            val topicText = topicSnapshot.documents.firstOrNull()?.getString("topic")
+
+            if (topicText != null) {
+                emit(Result.Success(topicText))
+            } else {
+                emit(Result.Error(DataError.Network.NOT_FOUND))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(DataError.Network.UNKNOWN))
+        }
     }
 }

@@ -10,4 +10,6 @@ interface SpeakingRepository {
     fun correctText(speakingText: String, topic: String): Flow<Result<CorrectedTextResult, DataError.Network>>
 
     fun publishSpeaking(speakingPost: SpeakingPost, aiCorrectedText: String): Flow<Result<Unit, DataError.Network>>
+
+    fun getDailyTopic(topicId: String): Flow<Result<String, DataError.Network>>
 }

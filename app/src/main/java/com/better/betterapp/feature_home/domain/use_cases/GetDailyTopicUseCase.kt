@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetDailyTopicUseCase(
     private val homeRepository: HomeRepository
 ) {
-    operator fun invoke(): Flow<Result<String, DataError.Network>> {
-        return homeRepository.getDailyTopic()
+    operator fun invoke(topicId: String): Flow<Result<String, DataError.Network>> {
+        return homeRepository.getDailyTopic(topicId)
     }
 }

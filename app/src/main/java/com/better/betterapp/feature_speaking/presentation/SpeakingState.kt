@@ -2,6 +2,7 @@ package com.better.betterapp.feature_speaking.presentation
 
 data class SpeakingState (
     val topic: String = "",
+    val topicId: String = "",
     val speakingText: String = "",
     val aiGeneratedText: String = "",
     val averageSpeakingScore: Double? = null,

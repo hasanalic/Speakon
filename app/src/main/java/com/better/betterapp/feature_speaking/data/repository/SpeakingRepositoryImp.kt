@@ -57,11 +57,23 @@ class SpeakingRepositoryImp @Inject constructor(
 
     override fun publishSpeaking(speakingPost: SpeakingPost, aiCorrectedText: String): Flow<Result<Unit, DataError.Network>> = flow {
         try {
+            val userId = speakingPost.userId
+
+            val userSnapshot = db.collection(Collections.USERS).document(userId).get().await()
+
+            val avatarId = userSnapshot.getLong("avatarId")?.toInt() ?: -1
+            val userName = userSnapshot.getString("userName") ?: "-1"
+
+            if (avatarId == -1 || userName == "-1") {
+                emit(Result.Error(DataError.Network.NOT_FOUND))
+                return@flow
+            }
+
             val firestoreSpeakingPost = FirestoreSpeakingPost(
                 userId = speakingPost.userId,
-                topicId = speakingPost.postId,
-                avatarId = speakingPost.avatarId,
-                userName = speakingPost.userName,
+                topicId = speakingPost.topicId,
+                avatarId = avatarId,
+                userName = userName,
                 originalText = speakingPost.speakingText,
                 correctedText = aiCorrectedText,
                 coheranceScore = speakingPost.coheranceScore,
@@ -118,5 +130,24 @@ class SpeakingRepositoryImp @Inject constructor(
                 "averageScore" to newAverageScore
             )
         ).await()
+    }
+
+    override fun getDailyTopic(topicId: String): Flow<Result<String, DataError.Network>> = flow {
+        try {
+            val topicSnapshot = db.collection(Collections.TOPICS)
+                .whereEqualTo("topicId", topicId)
+                .get()
+                .await()
+
+            val topicText = topicSnapshot.documents.firstOrNull()?.getString("topic")
+
+            if (topicText != null) {
+                emit(Result.Success(topicText))
+            } else {
+                emit(Result.Error(DataError.Network.NOT_FOUND))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(DataError.Network.UNKNOWN))
+        }
     }
 }
