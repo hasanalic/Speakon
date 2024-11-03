@@ -125,7 +125,7 @@ fun ProfileScreen(
                         ) {
                             item {
                                 Image(
-                                    painter = painterResource(R.drawable.home),
+                                    painter = painterResource(state.profile.avatarId.toInt()),
                                     contentDescription = "Avatar",
                                     modifier = Modifier
                                         .size(100.dp)

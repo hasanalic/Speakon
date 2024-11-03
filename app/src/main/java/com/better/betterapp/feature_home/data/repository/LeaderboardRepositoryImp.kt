@@ -28,6 +28,8 @@ class LeaderboardRepositoryImp @Inject constructor(
                 val avatarId = document.getLong("avatarId")?.toInt() ?: return@mapNotNull null
                 val averageScore = document.getLong("averageScore")?.toInt() ?: 0
 
+                println("AVATAR ID LEADERBOARD -> $avatarId")
+
                 User(
                     userId = userId,
                     userName = userName,

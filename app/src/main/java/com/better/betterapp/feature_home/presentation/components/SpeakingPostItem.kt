@@ -49,7 +49,7 @@ fun SpeakingPostItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(R.drawable.home),
+                    painter = painterResource(speakingPost.avatarId),
                     contentDescription = "Avatar",
                     modifier = Modifier
                         .size(40.dp)

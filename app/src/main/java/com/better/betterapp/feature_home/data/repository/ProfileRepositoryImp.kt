@@ -24,7 +24,7 @@ class ProfileRepositoryImp @Inject constructor(
                 Profile(
                     userId = data["userId"] as? String ?: "",
                     userName = data["userName"] as? String ?: "",
-                    avatarId = (data["avatarId"] as? Int)?.toString() ?: "",
+                    avatarId = data["avatarId"] as? Number ?: 0,
                     averageScore = data["averageScore"] as? Number ?: 0,
                     highestConsecutiveDays = data["highestConsecutiveDays"] as? Number ?: 0
                 )

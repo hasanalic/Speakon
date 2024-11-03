@@ -42,7 +42,7 @@ fun LeaderboardItem(
         )
 
         Image(
-            painter = painterResource(R.drawable.home),
+            painter = painterResource(user.avatarId),
             contentDescription = "Avatar",
             modifier = Modifier
                 .size(40.dp)
