@@ -5,6 +5,5 @@ data class Profile (
     val userName: String,
     val avatarId: String,
     val averageScore: String,
-    val maxConsecutiveDays: Number,
-    val likedPosts: List<Int>
+    val highestConsecutiveDays: Number
 )

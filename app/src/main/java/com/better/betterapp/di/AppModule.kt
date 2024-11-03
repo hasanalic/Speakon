@@ -2,10 +2,14 @@ package com.better.betterapp.di
 
 import com.better.betterapp.feature_home.data.repository.HomeRepositoryImp
 import com.better.betterapp.feature_home.data.repository.LeaderboardRepositoryImp
+import com.better.betterapp.feature_home.data.repository.ProfileRepositoryImp
 import com.better.betterapp.feature_home.domain.repository.HomeRepository
 import com.better.betterapp.feature_home.domain.repository.LeaderboardRepository
+import com.better.betterapp.feature_home.domain.repository.ProfileRepository
 import com.better.betterapp.feature_home.domain.use_cases.GetDailyTopicUseCase
+import com.better.betterapp.feature_home.domain.use_cases.GetProfileUseCase
 import com.better.betterapp.feature_home.domain.use_cases.GetSpeakingPostsUseCase
+import com.better.betterapp.feature_home.domain.use_cases.GetUserPostsUseCase
 import com.better.betterapp.feature_home.domain.use_cases.GetUsersUseCase
 import com.better.betterapp.feature_login.data.repository.LoginRepositoryImp
 import com.better.betterapp.feature_login.domain.repository.LoginRepository
@@ -77,6 +81,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideProfileRepository(db: FirebaseFirestore): ProfileRepository {
+        return ProfileRepositoryImp(db)
+    }
+
+    @Provides
+    @Singleton
     fun provideLoginUseCases(loginRepository: LoginRepository): LoginUseCases {
         return LoginUseCases(
             registerUserUseCase = RegisterUserUseCase(loginRepository)
@@ -85,11 +95,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHomeUseCases(homeRepository: HomeRepository, leaderboardRepository: LeaderboardRepository): HomeUseCases {
+    fun provideHomeUseCases(homeRepository: HomeRepository, leaderboardRepository: LeaderboardRepository, profileRepository: ProfileRepository): HomeUseCases {
         return HomeUseCases(
             getSpeakingPostsUseCase = GetSpeakingPostsUseCase(homeRepository),
             getDailyTopicUseCase = GetDailyTopicUseCase(homeRepository),
-            getUsersUseCase = GetUsersUseCase(leaderboardRepository)
+            getUsersUseCase = GetUsersUseCase(leaderboardRepository),
+            getProfileUseCase = GetProfileUseCase(profileRepository),
+            getUsersPostsUseCase = GetUserPostsUseCase(profileRepository)
         )
     }
 
